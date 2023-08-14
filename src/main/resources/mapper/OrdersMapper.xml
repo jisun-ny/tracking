@@ -3,4 +3,9 @@
 
 <mapper namespace="com.acorn.tracking.mapper.OrdersMapper">
 
+    <insert id="autoInsertOrders">
+        INSERT INTO Orders (customer_name,  quantity_ordered, total_price, latitude , longitude, date_time)
+        VALUES (#{customer_name}, #{quantity_ordered}, #{total_price}, #{latitude}, #{longitude}, CURRENT_TIMESTAMP)
+    </insert>
+
 </mapper>
