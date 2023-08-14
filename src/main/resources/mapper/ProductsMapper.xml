@@ -15,4 +15,10 @@
         LIMIT #{count}
     </select>
 
+    <update id="inventoryReduction">
+        UPDATE Products
+        SET quantity_available = quantity_available - #{sale}
+        WHERE product_id = #{product_id} AND quantity_available >= #{sale}
+    </update>
+
 </mapper>

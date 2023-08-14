@@ -15,6 +15,7 @@ import com.acorn.tracking.domain.Orders;
 import com.acorn.tracking.domain.Products;
 import com.acorn.tracking.mapper.OrdersMapper;
 import com.acorn.tracking.mapper.ProductsMapper;
+import com.acorn.tracking.service.OrderDetailsService;
 import com.acorn.tracking.service.OrdersService;
 import com.github.javafaker.Faker;
 import com.google.gson.GsonBuilder;
@@ -30,6 +31,7 @@ public class OrdersServiceImpl implements OrdersService {
 
     private final ProductsMapper productsMapper;
     private final OrdersMapper ordersMapper;
+    private final OrderDetailsService orderDetailService;
 
     @Override
     @Transactional
@@ -43,8 +45,9 @@ public class OrdersServiceImpl implements OrdersService {
             List<Products> randomProducts = productsMapper.getRandomProducts(faker.random().nextInt(1, 5));
             int totalOrdered = randomProducts.size();
             int totalPrice = randomProducts.stream().mapToInt(Products::getPrice).sum();
-            Orders newOrder = createOrder(totalOrdered, totalPrice, orderInfo);
-            insertOrders(newOrder);
+            Orders order = createOrder(totalOrdered, totalPrice, orderInfo);
+            insertOrders(order, randomProducts);
+            orderDetailService.autoInsertOrderDetails(ordersMapper.getLastInsertOrderId(), randomProducts);
         } catch (FileNotFoundException e) {
             handleFileNotFoundException(e);
         } catch (Exception e) {
@@ -62,9 +65,12 @@ public class OrdersServiceImpl implements OrdersService {
                 .build();
     }
 
-    private void insertOrders(Orders orders) {
+    private void insertOrders(Orders orders, List<Products> randomProducts) {
         try {
             ordersMapper.autoInsertOrders(orders);
+            for (Products product : randomProducts) {
+                productsMapper.inventoryReduction(product.getProduct_id(), 1);
+            }
         } catch (Exception e) {
             handleInsertionException(e);
             throw new RuntimeException("An error occurred while inserting orders", e);

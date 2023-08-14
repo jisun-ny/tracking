@@ -3,4 +3,9 @@
 
 <mapper namespace="com.acorn.tracking.mapper.OrderDetailsMapper">
 
+    <insert id="autoInsertOrderDetails" parameterType="com.acorn.tracking.domain.OrderDetails">
+        INSERT INTO OrderDetails (order_id, product_id, quantity, price)
+        VALUES (#{order_id}, #{product_id}, #{quantity}, #{price})
+    </insert>
+
 </mapper>

@@ -8,4 +8,8 @@
         VALUES (#{customer_name}, #{quantity_ordered}, #{total_price}, #{latitude}, #{longitude}, CURRENT_TIMESTAMP)
     </insert>
 
+    <select id="getLastInsertOrderId" resultType="int">
+        SELECT LAST_INSERT_ID()
+    </select>
+
 </mapper>

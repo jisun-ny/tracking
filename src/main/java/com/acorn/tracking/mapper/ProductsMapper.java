@@ -10,4 +10,5 @@ import com.acorn.tracking.domain.Products;
 public interface ProductsMapper {
     void autoInsertProducts(Products product);
     List<Products> getRandomProducts(int count);
+    void inventoryReduction(int product_id, int sale);
 }
