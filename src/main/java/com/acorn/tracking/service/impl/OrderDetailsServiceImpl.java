@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.acorn.tracking.domain.OrderDetails;
 import com.acorn.tracking.domain.Products;
 import com.acorn.tracking.mapper.OrderDetailsMapper;
+import com.acorn.tracking.mapper.OrdersMapper;
+import com.acorn.tracking.service.DeliveriesService;
 import com.acorn.tracking.service.OrderDetailsService;
 
 import lombok.RequiredArgsConstructor;
@@ -22,20 +24,22 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
     private static final Logger logger = LoggerFactory.getLogger(OrderDetailsServiceImpl.class);
 
     private final OrderDetailsMapper orderDetailsMapper;
+    private final DeliveriesService deliveriesService;
+    private final OrdersMapper ordersMapper;
 
     @Override
     @Transactional
-    public void autoInsertOrderDetails(int orderId, List<Products> randomProducts) {
-
+    public void autoInsertOrderDetails(int order_id, List<Products> randomProducts) {
         try {
             for (Products product : randomProducts) {
                 OrderDetails orderDetails = OrderDetails.builder()
-                        .order_id(orderId)
+                        .order_id(order_id)
                         .product_id(product.getProduct_id())
                         .quantity(1)
                         .price(product.getPrice())
                         .build();
                 orderDetailsMapper.autoInsertOrderDetails(orderDetails);
+                deliveriesService.autoInsertDeliveries(order_id);
             }
         } catch (DataAccessException e) {
             handleDataAccessException(e);
