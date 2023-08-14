@@ -1,9 +1,13 @@
 package com.acorn.tracking.service.impl;
 
+import java.math.BigDecimal;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.acorn.tracking.domain.Deliveries;
+import com.acorn.tracking.mapper.DeliveriesMapper;
 import com.acorn.tracking.service.DeliveriesService;
 
 import lombok.RequiredArgsConstructor;
@@ -13,9 +17,36 @@ import lombok.RequiredArgsConstructor;
 public class DeliveriesServiceImpl implements DeliveriesService {
 
     private static final Logger logger = LoggerFactory.getLogger(DeliveriesServiceImpl.class);
-    
-    @Override
-    public void autoInsertDeliveries() {
 
+    private final DeliveriesMapper deliveriesMapper;
+
+    @Override
+    public void autoInsertDeliveries(int order_id) {
+        try {
+            deliveriesMapper.autoInsertDeliveries(createDeliveries(order_id));
+        } catch (NumberFormatException e) {
+            handleNumberFormatException(e);
+        } catch (Exception e) {
+            handleGeneralException(e);
+        }
+    }
+
+    private Deliveries createDeliveries(int order_id) {
+        return Deliveries.builder()
+                .order_id(order_id)
+                .delivery_status("배송중")
+                .latitude(new BigDecimal(37.52318))
+                .longitude(new BigDecimal(126.95853))
+                .build();
+    }
+
+    private void handleNumberFormatException(NumberFormatException e) {
+        logger.error("Number format exception occurred while creating deliveries object", e);
+        throw new IllegalArgumentException("Invalid number format in deliveries details", e);
+    }
+
+    private void handleGeneralException(Exception e) {
+        logger.error("An unexpected error occurred while inserting deliveries", e);
+        throw new RuntimeException("Unexpected error inserting deliveries", e);
     }
 }
