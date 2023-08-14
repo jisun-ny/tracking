@@ -12,6 +12,8 @@ public interface TableMapper {
     void createBaskets();
     void dropOrders();
     void createOrders();
+    void dropOrderDetails(); 
+    void createOrderDetails(); 
     void dropDeliveries();
     void createDeliveries();
     void dropRecalls();

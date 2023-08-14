@@ -19,13 +19,4 @@ public class Deliveries {
     private BigDecimal latitude;
     private BigDecimal longitude;
     private Timestamp delivery_time;
-
-    @Getter
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class DeliveriesInfo {
-        private BigDecimal latitude;
-        private BigDecimal longitude;
-    }
 }

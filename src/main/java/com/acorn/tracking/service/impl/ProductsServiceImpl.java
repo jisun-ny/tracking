@@ -9,6 +9,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.acorn.tracking.domain.Products;
 import com.acorn.tracking.mapper.ProductsMapper;
@@ -22,12 +23,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProductsServiceImpl implements ProductsService {
 
-
     private static final Logger logger = LoggerFactory.getLogger(ProductsServiceImpl.class);
 
     private final ProductsMapper productsMapper;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void loadProductsFromFile() {
         try {
             InputStream inputStream = getProductsJsonInputStream();
@@ -35,8 +36,10 @@ public class ProductsServiceImpl implements ProductsService {
             insertProductsIntoDatabase(products);
         } catch (FileNotFoundException e) {
             handleFileNotFoundException(e);
+            throw new RuntimeException("File not found: Products.json", e);
         } catch (IOException e) {
             handleIOException(e);
+            throw new RuntimeException("An error occurred while reading the products from the JSON file", e);
         }
     }
 

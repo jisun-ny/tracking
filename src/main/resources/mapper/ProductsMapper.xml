@@ -7,21 +7,5 @@
         INSERT INTO Products (product_name, price, category, quantity_available, last_update)
         VALUES (#{product_name}, #{price}, #{category}, 100, CURRENT_TIMESTAMP)
     </insert>
-
-    <select id="getRandomProductsInfo" resultType="com.acorn.tracking.domain.Products$ProductInfo">
-        SELECT GROUP_CONCAT(product_id) AS product_id, SUM(price) AS total_price
-        FROM (
-            SELECT product_id, price
-            FROM Products
-            ORDER BY RAND()
-            LIMIT #{count}
-        ) AS temp_table
-    </select>
-
-    <update id="inventoryReduction">
-        UPDATE Products
-        SET quantity_available = quantity_available - #{sale}
-        WHERE product_id = #{product_id} AND quantity_available >= #{sale}
-    </update>
-
+    
 </mapper>
