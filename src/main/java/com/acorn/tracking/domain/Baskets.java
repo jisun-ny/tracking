@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class Baskets {
     private int basket_id;
     private int product_id;
+    private int delivery_id;
     private BigDecimal temperature;
     private BigDecimal humidity;
     private BigDecimal freshness;

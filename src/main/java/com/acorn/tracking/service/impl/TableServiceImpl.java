@@ -18,6 +18,7 @@ public class TableServiceImpl implements TableService {
     @Transactional
     public void resetDatabase() {
         try {
+            tableMapper.dropOrderDetails();
             tableMapper.dropRecalls();
             tableMapper.dropBaskets();
             tableMapper.dropDeliveries();
@@ -31,6 +32,7 @@ public class TableServiceImpl implements TableService {
             tableMapper.createDeliveries();
             tableMapper.createBaskets();
             tableMapper.createRecalls();
+            tableMapper.createOrderDetails();
         } catch (Exception e) {
             throw new RuntimeException("Database reset failed", e);
         }

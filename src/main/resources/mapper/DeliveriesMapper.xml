@@ -3,9 +3,4 @@
 
 <mapper namespace="com.acorn.tracking.mapper.DeliveriesMapper">
 
-    <insert id="autoInsertDelivery" parameterType="com.acorn.tracking.domain.Deliveries">
-        INSERT INTO Deliveries (order_id, delivery_status, latitude, longitude, delivery_time)
-        VALUES (#{order_id}, #{delivery_status}, #{latitude}, #{longitude}, CURRENT_TIMESTAMP);
-    </insert>
-
 </mapper>
