@@ -41,30 +41,34 @@ public class OrdersServiceImpl implements OrdersService {
             List<Orders> jsonOrderInfo = readOrdersFromJson(inputStream);
             Orders orderInfo = jsonOrderInfo.get(faker.random().nextInt(jsonOrderInfo.size()));
             List<Products> randomProducts = productsMapper.getRandomProducts(faker.random().nextInt(1, 5));
-            int total_ordered = randomProducts.size();
-            int total_price = randomProducts.stream().mapToInt(Products::getPrice).sum();
-            insertOrders(createOrder(total_ordered, total_price, orderInfo));
+            int totalOrdered = randomProducts.size();
+            int totalPrice = randomProducts.stream().mapToInt(Products::getPrice).sum();
+            Orders newOrder = createOrder(totalOrdered, totalPrice, orderInfo);
+            insertOrders(newOrder);
         } catch (FileNotFoundException e) {
             handleFileNotFoundException(e);
-            throw new RuntimeException("File not found: Orders.json", e);
         } catch (Exception e) {
             handleInsertionException(e);
-            throw new RuntimeException("An error occurred while inserting orders", e);
         }
     }
 
-    private Orders createOrder(int total_ordered, int total_price, Orders orderInfo) {
+    private Orders createOrder(int totalOrdered, int totalPrice, Orders orderInfo) {
         return Orders.builder()
                 .customer_name(orderInfo.getCustomer_name())
-                .quantity_ordered(total_ordered)
-                .total_price(total_price)
+                .quantity_ordered(totalOrdered)
+                .total_price(totalPrice)
                 .latitude(orderInfo.getLatitude())
                 .longitude(orderInfo.getLongitude())
                 .build();
     }
 
-    private void insertOrders(Orders orders) throws Exception {
-        ordersMapper.autoInsertOrders(orders);
+    private void insertOrders(Orders orders) {
+        try {
+            ordersMapper.autoInsertOrders(orders);
+        } catch (Exception e) {
+            handleInsertionException(e);
+            throw new RuntimeException("An error occurred while inserting orders", e);
+        }
     }
 
     private InputStream getOrdersJsonInputStream() throws FileNotFoundException {
@@ -85,6 +89,7 @@ public class OrdersServiceImpl implements OrdersService {
 
     private void handleFileNotFoundException(FileNotFoundException e) {
         logger.error("File not found: Orders.json", e);
+        throw new RuntimeException("File not found: Orders.json", e);
     }
 
     private void handleInsertionException(Exception e) {

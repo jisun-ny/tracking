@@ -36,10 +36,8 @@ public class ProductsServiceImpl implements ProductsService {
             insertProductsIntoDatabase(products);
         } catch (FileNotFoundException e) {
             handleFileNotFoundException(e);
-            throw new RuntimeException("File not found: Products.json", e);
         } catch (IOException e) {
             handleIOException(e);
-            throw new RuntimeException("An error occurred while reading the products from the JSON file", e);
         }
     }
 
@@ -67,9 +65,11 @@ public class ProductsServiceImpl implements ProductsService {
 
     private void handleFileNotFoundException(FileNotFoundException e) {
         logger.error("File not found: Products.json", e);
+        throw new RuntimeException("File not found: Products.json", e);
     }
 
     private void handleIOException(IOException e) {
         logger.error("An error occurred while reading the products from the JSON file", e);
+        throw new RuntimeException("An error occurred while reading the products from the JSON file", e);
     }
 }
