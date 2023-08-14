@@ -50,11 +50,6 @@
     "longitude": 127.01772
   },
   {
-    "customer_name": "김민재",
-    "latitude": 37.50398,
-    "longitude": 127.0269
-  },
-  {
     "customer_name": "황현우",
     "latitude": 37.51002,
     "longitude": 127.02936
@@ -88,11 +83,6 @@
     "customer_name": "최성준",
     "latitude": 37.49809,
     "longitude": 127.03465
-  },
-  {
-    "customer_name": "김영미",
-    "latitude": 37.49228,
-    "longitude": 127.0376
   },
   {
     "customer_name": "이준영",
@@ -180,11 +170,6 @@
     "longitude": 127.08175
   },
   {
-    "customer_name": "정태준",
-    "latitude": 37.51328,
-    "longitude": 127.0892
-  },
-  {
     "customer_name": "강미영",
     "latitude": 37.58073,
     "longitude": 127.08445
@@ -262,7 +247,7 @@
   {
     "customer_name": "한현지",
     "latitude": 37.504441,
-    "longitude": 126.941112
+    "longitude": 126.94111
   },
   {
     "customer_name": "송승호",
@@ -305,11 +290,6 @@
     "longitude": 126.93782
   },
   {
-    "customer_name": "한승민",
-    "latitude": 37.56692,
-    "longitude": 126.9335
-  },
-  {
     "customer_name": "손지훈",
     "latitude": 37.5721,
     "longitude": 126.94897
@@ -335,16 +315,6 @@
     "longitude": 126.95239
   },
   {
-    "customer_name": "유수진",
-    "latitude": 37.56997,
-    "longitude": 126.946
-  },
-  {
-    "customer_name": "임준영",
-    "latitude": 37.5751,
-    "longitude": 126.9254
-  },
-  {
     "customer_name": "황미란",
     "latitude": 37.56637,
     "longitude": 126.92873
@@ -363,11 +333,6 @@
     "customer_name": "박지원",
     "latitude": 37.56869,
     "longitude": 126.94171
-  },
-  {
-    "customer_name": "최재석",
-    "latitude": 37.5734,
-    "longitude": 126.9448
   },
   {
     "customer_name": "김지민",
@@ -462,7 +427,7 @@
   {
     "customer_name": "한현지",
     "latitude": 37.504441,
-    "longitude": 126.941112
+    "longitude": 126.94111
   },
   {
     "customer_name": "송승호",
@@ -590,19 +555,9 @@
     "longitude": 127.05672
   },
   {
-    "customer_name": "한지윤",
-    "latitude": 37.54735,
-    "longitude": 127.054
-  },
-  {
     "customer_name": "송민지",
     "latitude": 37.52699,
     "longitude": 127.00284
-  },
-  {
-    "customer_name": "황예진",
-    "latitude": 37.481592,
-    "longitude": 126.8957
   },
   {
     "customer_name": "조재호",
@@ -612,91 +567,91 @@
   {
     "customer_name": "박미란",
     "latitude": 37.464876,
-    "longitude": 126.905353
+    "longitude": 126.90535
   },
   {
     "customer_name": "최수진",
     "latitude": 37.46098,
-    "longitude": 126.898742
+    "longitude": 126.89874
   },
   {
     "customer_name": "김재영",
-    "latitude": 37.459949,
-    "longitude": 126.898398
+    "latitude": 37.45994,
+    "longitude": 126.89839
   },
   {
     "customer_name": "이은미",
-    "latitude": 37.460539,
-    "longitude": 126.895589
+    "latitude": 37.46053,
+    "longitude": 126.89558
   },
   {
     "customer_name": "정민호",
-    "latitude": 37.460313,
-    "longitude": 126.895257
+    "latitude": 37.46031,
+    "longitude": 126.89525
   },
   {
     "customer_name": "강영희",
-    "latitude": 37.468248,
-    "longitude": 126.904982
+    "latitude": 37.46824,
+    "longitude": 126.90498
   },
   {
     "customer_name": "윤지희",
-    "latitude": 37.464141,
-    "longitude": 126.891801
+    "latitude": 37.46414,
+    "longitude": 126.89180
   },
   {
     "customer_name": "임현우",
-    "latitude": 37.475103,
-    "longitude": 126.883337
+    "latitude": 37.47510,
+    "longitude": 126.88333
   },
   {
     "customer_name": "한민지",
-    "latitude": 37.474589,
-    "longitude": 126.882834
+    "latitude": 37.47458,
+    "longitude": 126.88283
   },
   {
     "customer_name": "송재호",
-    "latitude": 37.475005,
-    "longitude": 126.881456
+    "latitude": 37.47500,
+    "longitude": 126.88145
   },
   {
     "customer_name": "김지선",
-    "latitude": 37.475541,
-    "longitude": 126.881406
+    "latitude": 37.47554,
+    "longitude": 126.88140
   },
   {
     "customer_name": "이수진",
-    "latitude": 37.456355,
-    "longitude": 126.901488
+    "latitude": 37.45635,
+    "longitude": 126.90148
   },
   {
     "customer_name": "박민호",
-    "latitude": 37.472902,
-    "longitude": 126.900122
+    "latitude": 37.47290,
+    "longitude": 126.90012
   },
   {
     "customer_name": "최영희",
-    "latitude": 37.473646,
-    "longitude": 126.907741
+    "latitude": 37.47364,
+    "longitude": 126.90774
   },
   {
     "customer_name": "김현지",
-    "latitude": 37.473752,
-    "longitude": 126.908931
+    "latitude": 37.47375,
+    "longitude": 126.90893
   },
   {
     "customer_name": "정민선",
-    "latitude": 37.474284,
-    "longitude": 126.907168
+    "latitude": 37.47428,
+    "longitude": 126.90716
   },
   {
     "customer_name": "강승준",
-    "latitude": 37.475558,
-    "longitude": 126.906625
+    "latitude": 37.47555,
+    "longitude": 126.90662
   },
   {
     "customer_name": "윤서연",
-    "latitude": 37.476226,
-    "longitude": 126.908603
+    "latitude": 37.47622,
+    "longitude": 126.90860
   }
 ]

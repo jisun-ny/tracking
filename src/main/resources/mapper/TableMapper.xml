@@ -52,7 +52,7 @@
             quantity_ordered INT,                      
             total_price INT,                          
             latitude DECIMAL(8, 5),  
-            longitude DECIMAL(8, 5),                                             
+            longitude DECIMAL(9, 5),                                             
             customer_name VARCHAR(30)           
         );
     </update>
@@ -62,7 +62,7 @@
             order_id INT,                                
             delivery_status VARCHAR(20),
             latitude DECIMAL(8, 5),
-            longitude DECIMAL(8, 5),
+            longitude DECIMAL(9, 5),
             delivery_time TIMESTAMP,               
             FOREIGN KEY (order_id) REFERENCES Orders(order_id)
         );
