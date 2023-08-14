@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,8 +59,13 @@ public class ProductsServiceImpl implements ProductsService {
     }
 
     private void insertProductsIntoDatabase(List<Products> products) {
-        for (Products product : products) {
-            productsMapper.autoInsertProducts(product);
+        try {
+            for (Products product : products) {
+                productsMapper.autoInsertProducts(product);
+            }
+        } catch (DataAccessException e) {
+            logger.error("An error occurred while inserting products into the database", e);
+            throw new RuntimeException("An error occurred while inserting products into the database", e);
         }
     }
 

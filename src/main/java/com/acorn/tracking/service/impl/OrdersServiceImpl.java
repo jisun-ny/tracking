@@ -1,6 +1,7 @@
 package com.acorn.tracking.service.impl;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
@@ -50,8 +51,8 @@ public class OrdersServiceImpl implements OrdersService {
             orderDetailService.autoInsertOrderDetails(ordersMapper.getLastInsertOrderId(), randomProducts);
         } catch (FileNotFoundException e) {
             handleFileNotFoundException(e);
-        } catch (Exception e) {
-            handleInsertionException(e);
+        } catch (IOException e) {
+            handleIOException(e);
         }
     }
 
@@ -72,7 +73,7 @@ public class OrdersServiceImpl implements OrdersService {
                 productsMapper.inventoryReduction(product.getProduct_id(), 1);
             }
         } catch (Exception e) {
-            handleInsertionException(e);
+            logger.error("An error occurred while inserting orders", e);
             throw new RuntimeException("An error occurred while inserting orders", e);
         }
     }
@@ -85,7 +86,7 @@ public class OrdersServiceImpl implements OrdersService {
         return inputStream;
     }
 
-    private List<Orders> readOrdersFromJson(InputStream inputStream) {
+    private List<Orders> readOrdersFromJson(InputStream inputStream) throws IOException {
         return new GsonBuilder()
                 .create().fromJson(
                         new InputStreamReader(inputStream),
@@ -98,7 +99,8 @@ public class OrdersServiceImpl implements OrdersService {
         throw new RuntimeException("File not found: Orders.json", e);
     }
 
-    private void handleInsertionException(Exception e) {
-        logger.error("An error occurred while inserting orders", e);
+    private void handleIOException(IOException e) {
+        logger.error("An error occurred while reading the orders from the JSON file", e);
+        throw new RuntimeException("An error occurred while reading the orders from the JSON file", e);
     }
 }

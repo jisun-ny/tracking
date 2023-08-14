@@ -1,5 +1,6 @@
 package com.acorn.tracking.service.impl;
 
+import org.springframework.dao.DataAccessException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -18,15 +19,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrderDetailsServiceImpl implements OrderDetailsService {
 
-    private static final Logger logger = LoggerFactory.getLogger(OrdersServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(OrderDetailsServiceImpl.class);
 
     private final OrderDetailsMapper orderDetailsMapper;
 
     @Override
     @Transactional
     public void autoInsertOrderDetails(int orderId, List<Products> randomProducts) {
-        for (Products product : randomProducts) {
-            try {
+
+        try {
+            for (Products product : randomProducts) {
                 OrderDetails orderDetails = OrderDetails.builder()
                         .order_id(orderId)
                         .product_id(product.getProduct_id())
@@ -34,13 +36,13 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
                         .price(product.getPrice())
                         .build();
                 orderDetailsMapper.autoInsertOrderDetails(orderDetails);
-            } catch (Exception e) {
-                handleException(e);
             }
+        } catch (DataAccessException e) {
+            handleDataAccessException(e);
         }
     }
 
-    private void handleException(Exception e) {
+    private void handleDataAccessException(DataAccessException e) {
         logger.error("An error occurred while inserting order details", e);
         throw new RuntimeException("An error occurred while inserting order details", e);
     }
