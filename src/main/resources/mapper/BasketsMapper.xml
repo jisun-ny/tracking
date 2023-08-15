@@ -3,4 +3,9 @@
 
 <mapper namespace="com.acorn.tracking.mapper.BasketsMapper">
 
+    <insert id="autoInsertBaskets" parameterType="com.acorn.tracking.domain.Baskets">
+        INSERT INTO Baskets (product_id, delivery_id, temperature, humidity, freshness)
+        VALUES (#{product_id}, #{delivery_id}, #{temperature}, #{humidity}, #{freshness})
+    </insert>
+
 </mapper>
