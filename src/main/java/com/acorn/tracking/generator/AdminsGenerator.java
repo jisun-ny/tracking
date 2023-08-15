@@ -1,24 +1,22 @@
-package com.acorn.tracking.service.impl;
+package com.acorn.tracking.generator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.acorn.tracking.domain.Admins;
 import com.acorn.tracking.mapper.AdminsMapper;
-import com.acorn.tracking.service.AdminsService;
 
 import lombok.RequiredArgsConstructor;
 
-@Service
+@Component
 @RequiredArgsConstructor
-public class AdminsServiceImpl implements AdminsService {
+public class AdminsGenerator {
 
-    private static final Logger logger = LoggerFactory.getLogger(AdminsServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(AdminsGenerator.class);
 
     private final AdminsMapper adminsMapper;
 
-    @Override
     public void insertAdmins() {
         try {
             Admins admins = Admins.builder()

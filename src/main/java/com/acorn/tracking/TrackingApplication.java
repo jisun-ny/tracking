@@ -8,9 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import com.acorn.tracking.service.AdminsService;
-import com.acorn.tracking.service.ProductsService;
-import com.acorn.tracking.service.TableService;
+import com.acorn.tracking.generator.AdminsGenerator;
+import com.acorn.tracking.generator.ProductsGenerator;
+import com.acorn.tracking.generator.TableGenerator;
 
 @SpringBootApplication
 @EnableScheduling
@@ -23,16 +23,16 @@ public class TrackingApplication {
 	}
 
 	@Bean
-	CommandLineRunner runner(TableService tableService, ProductsService productService, AdminsService adminsService) {
+	CommandLineRunner runner(TableGenerator tableGenerator, ProductsGenerator productsGenerator, AdminsGenerator adminsGenerator) {
 		return args -> {
 			logger.info("Initializing database");
-			tableService.resetDatabase();
+			tableGenerator.resetDatabase();
 			logger.info("Database initialized successfully");
 			logger.info("Generating products");
-			productService.loadProductsFromFile();
+			productsGenerator.loadProductsFromFile();
 			logger.info("Products generated successfully");
 			logger.info("Generating Admins");
-			adminsService.insertAdmins();
+			adminsGenerator.insertAdmins();
 			logger.info("Admins generated successfully");
 		};
 	}
