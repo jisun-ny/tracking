@@ -29,10 +29,9 @@ public class ProductsServiceImpl implements ProductsService {
     private final ProductsMapper productsMapper;
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional
     public void loadProductsFromFile() {
-        try {
-            InputStream inputStream = getProductsJsonInputStream();
+        try (InputStream inputStream = getProductsJsonInputStream()) {
             List<Products> products = readProductsFromJson(inputStream);
             insertProductsIntoDatabase(products);
         } catch (FileNotFoundException e) {
@@ -60,8 +59,10 @@ public class ProductsServiceImpl implements ProductsService {
 
     private void insertProductsIntoDatabase(List<Products> products) {
         try {
-            for (Products product : products) {
-                productsMapper.autoInsertProducts(product);
+            int batchSize = 100;
+            for (int i = 0; i < products.size(); i += batchSize) {
+                List<Products> batch = products.subList(i, Math.min(products.size(), i + batchSize));
+                productsMapper.autoInsertProducts(batch);
             }
         } catch (DataAccessException e) {
             logger.error("An error occurred while inserting products into the database", e);

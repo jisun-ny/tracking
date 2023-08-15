@@ -36,7 +36,7 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     @Transactional
-    @Scheduled(initialDelay = 5000, fixedRate = 10000)
+    @Scheduled(initialDelay = 5000, fixedRate = 30000)
     public void autoInsertOrders() {
         try {
             Faker faker = new Faker();
@@ -87,11 +87,10 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     private List<Orders> readOrdersFromJson(InputStream inputStream) throws IOException {
-        return new GsonBuilder()
-                .create().fromJson(
-                        new InputStreamReader(inputStream),
-                        new TypeToken<List<Orders>>() {
-                        }.getType());
+        try (InputStreamReader reader = new InputStreamReader(inputStream)) {
+            return new GsonBuilder().create().fromJson(reader, new TypeToken<List<Orders>>() {
+            }.getType());
+        }
     }
 
     private void handleFileNotFoundException(FileNotFoundException e) {

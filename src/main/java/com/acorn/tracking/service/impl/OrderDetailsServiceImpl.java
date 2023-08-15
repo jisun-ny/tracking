@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.acorn.tracking.domain.OrderDetails;
 import com.acorn.tracking.domain.Products;
 import com.acorn.tracking.mapper.OrderDetailsMapper;
-import com.acorn.tracking.mapper.OrdersMapper;
 import com.acorn.tracking.service.DeliveriesService;
 import com.acorn.tracking.service.OrderDetailsService;
 
@@ -25,7 +24,6 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 
     private final OrderDetailsMapper orderDetailsMapper;
     private final DeliveriesService deliveriesService;
-    private final OrdersMapper ordersMapper;
 
     @Override
     @Transactional
