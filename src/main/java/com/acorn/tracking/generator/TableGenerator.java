@@ -1,20 +1,18 @@
-package com.acorn.tracking.service.impl;
+package com.acorn.tracking.generator;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.acorn.tracking.mapper.TableMapper;
-import com.acorn.tracking.service.TableService;
 
 import lombok.RequiredArgsConstructor;
 
-@Service
+@Component
 @RequiredArgsConstructor
-public class TableServiceImpl implements TableService {
+public class TableGenerator {
 
     private final TableMapper tableMapper;
 
-    @Override
     @Transactional
     public void resetDatabase() {
         try {
