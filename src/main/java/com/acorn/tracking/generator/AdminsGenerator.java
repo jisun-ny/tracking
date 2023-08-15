@@ -3,6 +3,7 @@ package com.acorn.tracking.generator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.dao.DataAccessException;
 
 import com.acorn.tracking.domain.Admins;
 import com.acorn.tracking.mapper.AdminsMapper;
@@ -25,8 +26,20 @@ public class AdminsGenerator {
                     .password("1234")
                     .build();
             adminsMapper.autoInsertAdmins(admins);
+        } catch (DataAccessException e) {
+            handleDataAccessException(e);
         } catch (Exception e) {
-            logger.error("An error occurred while inserting admins", e);
+            handleGeneralException(e);
         }
+    }
+
+    private void handleDataAccessException(DataAccessException e) {
+        logger.error("An error occurred during data access.", e);
+        throw new RuntimeException("Error during data access", e);
+    }
+
+    private void handleGeneralException(Exception e) {
+        logger.error("An error occurred while inserting an admin.", e);
+        throw new RuntimeException("Unexpected error during admin insertion", e);
     }
 }
