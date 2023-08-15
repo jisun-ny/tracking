@@ -24,4 +24,10 @@
         WHERE product_id = #{product_id} AND quantity_available >= #{sale}
     </update>
 
+    <select id="getCategoryByProductsId" resultType="string">
+        SELECT category 
+        FROM Products 
+        WHERE product_id = #{product_id}
+    </select>
+
 </mapper>

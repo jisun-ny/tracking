@@ -8,4 +8,8 @@
         VALUES (#{order_id}, #{delivery_status}, #{latitude}, #{longitude}, CURRENT_TIMESTAMP)
     </insert>
 
+    <select id="getLastInsertDeliveriesId" resultType="int">
+        SELECT LAST_INSERT_ID()
+    </select>
+
 </mapper>

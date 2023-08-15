@@ -37,7 +37,7 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
                         .price(product.getPrice())
                         .build();
                 orderDetailsMapper.autoInsertOrderDetails(orderDetails);
-                deliveriesService.autoInsertDeliveries(order_id);
+                deliveriesService.autoInsertDeliveries(order_id, product.getProduct_id());
             }
         } catch (DataAccessException e) {
             handleDataAccessException(e);
