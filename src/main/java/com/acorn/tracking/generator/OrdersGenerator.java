@@ -6,8 +6,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,19 +19,19 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class OrdersGenerator {
-
-    private static final Logger logger = LoggerFactory.getLogger(OrdersGenerator.class);
 
     private final ProductsMapper productsMapper;
     private final OrdersMapper ordersMapper;
     private final OrderDetailsGenerator orderDetailsGenerator;
 
     @Transactional
-    @Scheduled(initialDelay = 5000, fixedRate = 30000)
+    @Scheduled(initialDelay = 3000, fixedRate = 30000)
     public void autoInsertOrders() {
         try {
             Faker faker = new Faker();
@@ -70,7 +68,7 @@ public class OrdersGenerator {
                 productsMapper.inventoryReduction(product.getProduct_id(), 1);
             }
         } catch (Exception e) {
-            logger.error("An error occurred while inserting orders", e);
+            log.error("An error occurred while inserting orders", e);
             throw new RuntimeException("An error occurred while inserting orders", e);
         }
     }
@@ -91,12 +89,12 @@ public class OrdersGenerator {
     }
 
     private void handleFileNotFoundException(FileNotFoundException e) {
-        logger.error("File not found: Orders.json", e);
+        log.error("File not found: Orders.json", e);
         throw new RuntimeException("File not found: Orders.json", e);
     }
 
     private void handleIOException(IOException e) {
-        logger.error("An error occurred while reading the orders from the JSON file", e);
+        log.error("An error occurred while reading the orders from the JSON file", e);
         throw new RuntimeException("An error occurred while reading the orders from the JSON file", e);
     }
 }

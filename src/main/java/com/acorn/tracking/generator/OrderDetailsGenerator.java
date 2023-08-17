@@ -3,8 +3,6 @@ package com.acorn.tracking.generator;
 import org.springframework.dao.DataAccessException;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,12 +11,12 @@ import com.acorn.tracking.domain.Products;
 import com.acorn.tracking.mapper.OrderDetailsMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class OrderDetailsGenerator {
-
-    private static final Logger logger = LoggerFactory.getLogger(OrderDetailsGenerator.class);
 
     private final OrderDetailsMapper orderDetailsMapper;
     private final DeliveriesGenerator deliveriesGenerator;
@@ -42,7 +40,7 @@ public class OrderDetailsGenerator {
     }
 
     private void handleDataAccessException(DataAccessException e) {
-        logger.error("An error occurred while inserting order details", e);
+        log.error("An error occurred while inserting order details", e);
         throw new RuntimeException("An error occurred while inserting order details", e);
     }
 }

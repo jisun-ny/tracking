@@ -3,8 +3,6 @@ package com.acorn.tracking.generator;
 import java.math.BigDecimal;
 import java.util.Random;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,12 +11,13 @@ import com.acorn.tracking.mapper.BasketsMapper;
 import com.acorn.tracking.mapper.ProductsMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class BasketsGenerator {
 
-    private static final Logger logger = LoggerFactory.getLogger(BasketsGenerator.class);
     private static final Random random = new Random();
 
     private final ProductsMapper productsMapper;
@@ -48,7 +47,7 @@ public class BasketsGenerator {
                     basket = createBasket(product_id, delivery_id, 2, 6, 63, 67, 73, 77);
                     break;
                 default:
-                    basket = createBasket(product_id, delivery_id, 18, 22, 38, 42, 73, 77);
+                    basket = createBasket(product_id, delivery_id, 2, 5, 38, 42, 73, 77);
                     break;
             }
             basketsMapper.autoInsertBaskets(basket);
@@ -71,12 +70,12 @@ public class BasketsGenerator {
     }
 
     private void handleNumberFormatException(NumberFormatException e) {
-        logger.error("Number format exception occurred while creating basket object", e);
+        log.error("Number format exception occurred while creating basket object", e);
         throw new IllegalArgumentException("Invalid number format in basket details", e);
     }
 
     private void handleGeneralException(Exception e) {
-        logger.error("An unexpected error occurred while inserting basket", e);
+        log.error("An unexpected error occurred while inserting basket", e);
         throw new RuntimeException("Unexpected error inserting basket", e);
     }
 }

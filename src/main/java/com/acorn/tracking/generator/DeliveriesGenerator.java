@@ -2,8 +2,6 @@ package com.acorn.tracking.generator;
 
 import java.math.BigDecimal;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,12 +9,12 @@ import com.acorn.tracking.domain.Deliveries;
 import com.acorn.tracking.mapper.DeliveriesMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class DeliveriesGenerator {
-
-    private static final Logger logger = LoggerFactory.getLogger(DeliveriesGenerator.class);
 
     private final DeliveriesMapper deliveriesMapper;
     private final BasketsGenerator basketsGenerator;
@@ -43,12 +41,12 @@ public class DeliveriesGenerator {
     }
 
     private void handleNumberFormatException(NumberFormatException e) {
-        logger.error("Number format exception occurred while creating deliveries object", e);
+        log.error("Number format exception occurred while creating deliveries object", e);
         throw new IllegalArgumentException("Invalid number format in deliveries details", e);
     }
 
     private void handleGeneralException(Exception e) {
-        logger.error("An unexpected error occurred while inserting deliveries", e);
+        log.error("An unexpected error occurred while inserting deliveries", e);
         throw new RuntimeException("Unexpected error inserting deliveries", e);
     }
 }
