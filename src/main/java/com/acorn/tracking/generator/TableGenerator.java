@@ -6,7 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.acorn.tracking.mapper.TableMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class TableGenerator {
@@ -32,6 +34,7 @@ public class TableGenerator {
             tableMapper.createRecalls();
             tableMapper.createOrderDetails();
         } catch (Exception e) {
+            log.error("Database reset failed", e);
             throw new RuntimeException("Database reset failed", e);
         }
     }

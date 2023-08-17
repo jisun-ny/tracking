@@ -6,8 +6,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,12 +16,12 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ProductsGenerator {
-
-    private static final Logger logger = LoggerFactory.getLogger(ProductsGenerator.class);
 
     private final ProductsMapper productsMapper;
 
@@ -63,18 +61,18 @@ public class ProductsGenerator {
                 productsMapper.autoInsertProducts(batch);
             }
         } catch (DataAccessException e) {
-            logger.error("An error occurred while inserting products into the database", e);
+            log.error("An error occurred while inserting products into the database", e);
             throw new RuntimeException("An error occurred while inserting products into the database", e);
         }
     }
 
     private void handleFileNotFoundException(FileNotFoundException e) {
-        logger.error("File not found: Products.json", e);
+        log.error("File not found: Products.json", e);
         throw new RuntimeException("File not found: Products.json", e);
     }
 
     private void handleIOException(IOException e) {
-        logger.error("An error occurred while reading the products from the JSON file", e);
+        log.error("An error occurred while reading the products from the JSON file", e);
         throw new RuntimeException("An error occurred while reading the products from the JSON file", e);
     }
 }

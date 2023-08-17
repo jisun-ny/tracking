@@ -12,4 +12,11 @@
         SELECT LAST_INSERT_ID()
     </select>
 
+    <select id="getLocations" resultType="com.acorn.tracking.domain.Deliveries">
+        SELECT o.order_id, d.latitude, d.longitude
+        FROM Orders o
+        JOIN Deliveries d ON o.order_id = d.order_id
+        GROUP BY o.order_id, d.latitude, d.longitude;
+    </select>
+
 </mapper>
