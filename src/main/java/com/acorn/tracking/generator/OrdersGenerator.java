@@ -1,14 +1,9 @@
 package com.acorn.tracking.generator;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
-
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.acorn.tracking.domain.Orders;
 import com.acorn.tracking.domain.Products;
@@ -20,6 +15,9 @@ import com.google.gson.reflect.TypeToken;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Component
@@ -34,21 +32,20 @@ public class OrdersGenerator {
     @Scheduled(initialDelay = 3000, fixedRate = 30000)
     public void autoInsertOrders() {
         try {
-            Faker faker = new Faker();
-            InputStream inputStream = getOrdersJsonInputStream();
-            List<Orders> jsonOrderInfo = readOrdersFromJson(inputStream);
-            Orders orderInfo = jsonOrderInfo.get(faker.random().nextInt(jsonOrderInfo.size()));
-            List<Products> randomProducts = productsMapper.getRandomProducts(faker.random().nextInt(1, 5));
-            int totalOrdered = randomProducts.size();
-            int totalPrice = randomProducts.stream().mapToInt(Products::getPrice).sum();
-            Orders order = createOrder(totalOrdered, totalPrice, orderInfo);
-            insertOrders(order, randomProducts);
-            orderDetailsGenerator.autoInsertOrderDetails(ordersMapper.getLastInsertOrderId(), randomProducts);
-        } catch (FileNotFoundException e) {
-            handleFileNotFoundException(e);
-        } catch (IOException e) {
-            handleIOException(e);
+            processOrders();
+        } catch (Exception e) {
+            handleException(e, "An error occurred while processing orders");
         }
+    }
+
+    private void processOrders() throws IOException {
+        Faker faker = new Faker();
+        List<Orders> jsonOrderInfo = readOrdersFromJson(getClass().getResourceAsStream("/static/Orders.json"));
+        Orders orderInfo = jsonOrderInfo.get(faker.random().nextInt(jsonOrderInfo.size()));
+        List<Products> randomProducts = productsMapper.getRandomProducts(faker.random().nextInt(1, 5));
+        Orders order = createOrder(randomProducts.size(), randomProducts.stream().mapToInt(Products::getPrice).sum(), orderInfo);
+        insertOrders(order, randomProducts);
+        orderDetailsGenerator.autoInsertOrderDetails(ordersMapper.getLastInsertOrderId(), randomProducts);
     }
 
     private Orders createOrder(int totalOrdered, int totalPrice, Orders orderInfo) {
@@ -73,14 +70,6 @@ public class OrdersGenerator {
         }
     }
 
-    private InputStream getOrdersJsonInputStream() throws FileNotFoundException {
-        InputStream inputStream = getClass().getResourceAsStream("/static/Orders.json");
-        if (inputStream == null) {
-            throw new FileNotFoundException("File not found: Orders.json");
-        }
-        return inputStream;
-    }
-
     private List<Orders> readOrdersFromJson(InputStream inputStream) throws IOException {
         try (InputStreamReader reader = new InputStreamReader(inputStream)) {
             return new GsonBuilder().create().fromJson(reader, new TypeToken<List<Orders>>() {
@@ -88,13 +77,8 @@ public class OrdersGenerator {
         }
     }
 
-    private void handleFileNotFoundException(FileNotFoundException e) {
-        log.error("File not found: Orders.json", e);
-        throw new RuntimeException("File not found: Orders.json", e);
-    }
-
-    private void handleIOException(IOException e) {
-        log.error("An error occurred while reading the orders from the JSON file", e);
-        throw new RuntimeException("An error occurred while reading the orders from the JSON file", e);
+    private void handleException(Exception e, String errorMessage) {
+        log.error(errorMessage, e);
+        throw new RuntimeException(errorMessage, e);
     }
 }

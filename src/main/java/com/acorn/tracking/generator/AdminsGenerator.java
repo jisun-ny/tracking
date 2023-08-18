@@ -18,10 +18,11 @@ public class AdminsGenerator {
 
     public void insertAdmins() {
         try {
+            String adminPassword = getAdminPassword();
             Admins admins = Admins.builder()
                     .name("admin")
                     .email("admin@gmail.com")
-                    .password("1234")
+                    .password(adminPassword)
                     .build();
             adminsMapper.autoInsertAdmins(admins);
         } catch (DataAccessException e) {
@@ -29,6 +30,10 @@ public class AdminsGenerator {
         } catch (Exception e) {
             handleGeneralException(e);
         }
+    }
+
+    private String getAdminPassword() {
+        return "secure_password";
     }
 
     private void handleDataAccessException(DataAccessException e) {
