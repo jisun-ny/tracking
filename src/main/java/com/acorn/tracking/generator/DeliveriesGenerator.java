@@ -20,10 +20,10 @@ public class DeliveriesGenerator {
     private final BasketsGenerator basketsGenerator;
 
     @Transactional
-    public void autoInsertDeliveries(int order_id, int product_id) {
+    public void autoInsertDeliveries(int orderId, int productId) {
         try {
-            deliveriesMapper.autoInsertDeliveries(createDeliveries(order_id));
-            basketsGenerator.autoInsertBaskets(product_id, deliveriesMapper.getLastInsertDeliveriesId());
+            deliveriesMapper.autoInsertDeliveries(createDeliveries(orderId));
+            basketsGenerator.autoInsertBaskets(productId, deliveriesMapper.getLastInsertDeliveriesId());
         } catch (NumberFormatException e) {
             handleNumberFormatException(e);
         } catch (Exception e) {
@@ -31,9 +31,9 @@ public class DeliveriesGenerator {
         }
     }
 
-    private Deliveries createDeliveries(int order_id) {
+    private Deliveries createDeliveries(int orderId) {
         return Deliveries.builder()
-                .order_id(order_id)
+                .order_id(orderId)
                 .delivery_status("배송중")
                 .latitude(new BigDecimal(37.52318))
                 .longitude(new BigDecimal(126.95853))

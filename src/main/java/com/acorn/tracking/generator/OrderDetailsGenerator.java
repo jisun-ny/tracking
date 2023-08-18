@@ -22,21 +22,26 @@ public class OrderDetailsGenerator {
     private final DeliveriesGenerator deliveriesGenerator;
 
     @Transactional
-    public void autoInsertOrderDetails(int order_id, List<Products> randomProducts) {
+    public void autoInsertOrderDetails(int orderId, List<Products> randomProducts) {
         try {
-            for (Products product : randomProducts) {
-                OrderDetails orderDetails = OrderDetails.builder()
-                        .order_id(order_id)
-                        .product_id(product.getProduct_id())
-                        .quantity(1)
-                        .price(product.getPrice())
-                        .build();
-                orderDetailsMapper.autoInsertOrderDetails(orderDetails);
-                deliveriesGenerator.autoInsertDeliveries(order_id, product.getProduct_id());
-            }
+            randomProducts.forEach(product -> insertOrderDetailAndDelivery(orderId, product));
         } catch (DataAccessException e) {
             handleDataAccessException(e);
         }
+    }
+
+    private void insertOrderDetailAndDelivery(int orderId, Products product) {
+        orderDetailsMapper.autoInsertOrderDetails(createOrderDetails(orderId, product));
+        deliveriesGenerator.autoInsertDeliveries(orderId, product.getProduct_id());
+    }
+
+    private OrderDetails createOrderDetails(int orderId, Products product) {
+        return OrderDetails.builder()
+                .order_id(orderId)
+                .product_id(product.getProduct_id())
+                .quantity(1)
+                .price(product.getPrice())
+                .build();
     }
 
     private void handleDataAccessException(DataAccessException e) {

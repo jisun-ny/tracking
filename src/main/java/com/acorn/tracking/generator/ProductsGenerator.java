@@ -1,6 +1,5 @@
 package com.acorn.tracking.generator;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,47 +27,40 @@ public class ProductsGenerator {
     @Transactional
     public void loadProductsFromFile() {
         try (InputStream inputStream = getProductsJsonInputStream()) {
-            List<Products> products = readProductsFromJson(inputStream);
-            insertProductsIntoDatabase(products);
-        } catch (FileNotFoundException e) {
-            handleFileNotFoundException(e);
+            insertProductsIntoDatabase(readProductsFromJson(inputStream));
         } catch (IOException e) {
             handleIOException(e);
         }
     }
 
-    private InputStream getProductsJsonInputStream() throws FileNotFoundException {
+    private InputStream getProductsJsonInputStream() throws IOException {
         InputStream inputStream = getClass().getResourceAsStream("/static/Products.json");
         if (inputStream == null) {
-            throw new FileNotFoundException("File not found: Products.json");
+            throw new IOException("File not found: Products.json");
         }
         return inputStream;
     }
 
     private List<Products> readProductsFromJson(InputStream inputStream) throws IOException {
-        return new GsonBuilder()
-                .create().fromJson(
-                        new InputStreamReader(inputStream),
-                        new TypeToken<List<Products>>() {
-                        }.getType());
+        try (InputStreamReader reader = new InputStreamReader(inputStream)) {
+            return new GsonBuilder().create().fromJson(reader, new TypeToken<List<Products>>() {
+            }.getType());
+        }
     }
 
     private void insertProductsIntoDatabase(List<Products> products) {
         try {
-            int batchSize = 100;
-            for (int i = 0; i < products.size(); i += batchSize) {
-                List<Products> batch = products.subList(i, Math.min(products.size(), i + batchSize));
-                productsMapper.autoInsertProducts(batch);
+            for (int i = 0; i < products.size(); i += 100) {
+                productsMapper.autoInsertProducts(products.subList(i, Math.min(products.size(), i + 100)));
             }
         } catch (DataAccessException e) {
-            log.error("An error occurred while inserting products into the database", e);
-            throw new RuntimeException("An error occurred while inserting products into the database", e);
+            handleDatabaseException(e);
         }
     }
 
-    private void handleFileNotFoundException(FileNotFoundException e) {
-        log.error("File not found: Products.json", e);
-        throw new RuntimeException("File not found: Products.json", e);
+    private void handleDatabaseException(DataAccessException e) {
+        log.error("An error occurred while inserting products into the database", e);
+        throw new RuntimeException("An error occurred while inserting products into the database", e);
     }
 
     private void handleIOException(IOException e) {
